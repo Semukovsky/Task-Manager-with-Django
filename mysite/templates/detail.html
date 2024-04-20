@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+detail
+{% endblock %}
+
+{% block body %}
+{% load static %}
+<div class="card text-center" style="width: 55%; margin-left: auto; margin-right: auto; margin-top: 20px">
+  <div class="card-header">
+    <p style="max-height: 5px;
+    color:
+    {% if task.status.status_name == 'Ready' %} green
+    {% elif task.status.status_name == 'In progress'%} orange
+    {% else %} red {% endif %}">Статус: <b>{{ task.status.status_name }}</b></p>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Название задачи: <b>{{ task.title }}</b></h5>
+    <p class="card-text">Описание задачи: <i>{{ task.text }}</i></p>
+    <div style="display: flex; justify-content: space-around; max-width: 50%; margin-left: auto; margin-right: auto">
+      {% if task.status.status_name == "In progress" or task.status.status_name == "Cancel" %}
+      <form method="post" action="{% url 'tasks:change_status' id_task=task.id id_status=1 %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success" style="width: 250px;">Изменить на "Ready"</button>
+      </form>
+      {% endif %}
+      {% if task.status.status_name == "Ready" or task.status.status_name == "Cancel" %}
+      <form method="post" action="{% url 'tasks:change_status' id_task=task.id id_status=2 %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-warning" style="width: 250px;">Изменить на "In process"</button>
+      </form>
+      {% endif %}
+      {% if task.status.status_name == "Ready" or task.status.status_name == "In progress" %}
+      <form method="post" action="{% url 'tasks:change_status' id_task=task.id id_status=3 %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" style="width: 250px;">Изменить на "Cancel"</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+  <div class="card-footer text-muted">
+    {{ task.created_at }}
+  </div>
+</div>
+{% endblock %}

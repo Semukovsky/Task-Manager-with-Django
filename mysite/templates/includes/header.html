@@ -1,0 +1,10 @@
+{% load static %}
+<header class="d-flex justify-content-center py-3">
+  <ul class="nav nav-pills">
+    {% with request.resolver_match.view_name as view_name %}
+      <li class="nav-item"><a href="{% url 'homepage:homepage' %}" class="nav-link {% if view_name == 'homepage:homepage' %}active{% endif %}" aria-current="page">Главная</a></li>
+      <li class="nav-item"><a href="{% url 'tasks:tasks' %}" class="nav-link {% if view_name == 'tasks:tasks' %}active{% endif %}">Задания</a></li>
+      <li class="nav-item"><a href="{% url 'tasks:new_task' %}" class="nav-link {% if view_name == 'tasks:new_task' %}active{% endif %}">Новое задание</a></li>
+    {% endwith %}
+  </ul>
+</header>
